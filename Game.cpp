@@ -14,10 +14,10 @@ void Game::startGame()
 {
     if(!font.loadFromFile("font/Xolonium-Bold.otf"))
     {
-        cerr << "Failed to load font/Xolonium-Bold.otf!";
+        cerr << "Failed to load Xolonium-Bold.otf!";
         return;
-    }
-            
+    } 
+        
     updateGame();
 }
 
