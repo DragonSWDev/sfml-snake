@@ -7,8 +7,7 @@ This is simple Snake written in C++ with SFML 2 library. Game is currently unfin
 
 #### 2. Get source code
 
-Clone git repository
-    git clone https://github.com/BlackDragonK99/sfml-snake && cd sfml-snake
+git clone https://github.com/BlackDragonK99/sfml-snake && cd sfml-snake
     
 #### 3. Configure and build
     mkdir build && cd build
