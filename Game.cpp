@@ -125,7 +125,7 @@ void Game::drawOptions()
     optionsStrings[0].setString("OPTIONS");
     optionsStrings[1].setString("Snake speed");
     optionsStrings[2].setString("Can walk through border");
-    optionsStrings[3].setString("Generate random walls");
+    optionsStrings[3].setString("Generate random wall");
     optionsStrings[4].setString("Back");
     optionsStrings[5].setString("Slow");
     optionsStrings[6].setString("Fast");
@@ -151,6 +151,19 @@ void Game::drawOptions()
         
         optionsStrings[i].setPosition(SCREEN_WIDTH/2-optionsStrings[i].getGlobalBounds().width/2, 100+100*i);
     }
+    
+    //Set checkboxes
+    borderCheckbox.setSize(Vector2f(20,20));
+    borderCheckbox.setOutlineColor(Color::Red);
+    borderCheckbox.setFillColor(Color::Black);
+    borderCheckbox.setOutlineThickness(5);
+    borderCheckbox.setPosition(SCREEN_WIDTH/2, 350);
+    
+    wallsCheckbox.setSize(Vector2f(20,20));
+    wallsCheckbox.setOutlineColor(Color::Red);
+    wallsCheckbox.setFillColor(Color::Black);
+    wallsCheckbox.setOutlineThickness(5);
+    wallsCheckbox.setPosition(SCREEN_WIDTH/2, 450);
     
    Event event;
    
@@ -178,10 +191,25 @@ void Game::drawOptions()
               if(optionsStrings[5].getGlobalBounds().contains(mouse) && event.mouseButton.button == Mouse::Left && snakeFast)
                 snakeFast = false;
           
-          ////Set fast snake speed after selecting it
+          //Set fast snake speed after selecting it
           if(event.type == Event::MouseButtonReleased)
               if(optionsStrings[6].getGlobalBounds().contains(mouse) && event.mouseButton.button == Mouse::Left && !snakeFast)
                 snakeFast = true;
+              
+          //Set right flag after choosing checkbox
+          if(event.type == Event::MouseButtonReleased)
+              if(borderCheckbox.getGlobalBounds().contains(mouse))
+                  if(!canWalkBorder)
+                    canWalkBorder = true;
+                  else
+                      canWalkBorder = false;
+                  
+          if(event.type == Event::MouseButtonReleased)
+              if(wallsCheckbox.getGlobalBounds().contains(mouse))
+                  if(!generateWalls)
+                      generateWalls = true;
+                  else
+                      generateWalls = false;
               
       }
       
@@ -208,10 +236,26 @@ void Game::drawOptions()
       else
           optionsStrings[6].setFillColor(Color::Yellow);
       
+      
+      //Mark on unmark checkbox
+      if(canWalkBorder)
+          borderCheckbox.setFillColor(Color::Yellow);
+      else
+          borderCheckbox.setFillColor(Color::Black);
+      
+      if(generateWalls)
+          wallsCheckbox.setFillColor(Color::Yellow);
+      else
+          wallsCheckbox.setFillColor(Color::Black);
+          
+      
       renderWindow.clear();
       
       for(int i = 0; i < 7; i++)
           renderWindow.draw(optionsStrings[i]);
+      
+      renderWindow.draw(borderCheckbox);
+      renderWindow.draw(wallsCheckbox);
       
       renderWindow.display();
    }
