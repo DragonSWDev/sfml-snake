@@ -5,9 +5,13 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <sstream>
 
 //SFML Headers
 #include <SFML/Graphics.hpp>
+
+//Game headers
+#include "Snake.h"
 
 //Define
 #define SCREEN_HEIGHT 600
@@ -29,6 +33,8 @@ private:
     Text gameName;
     Text menuStrings[3];
     Text optionsStrings[7];
+    Text snakePoints;
+    Text gameTime;
     
     bool snakeFast;
     bool generateWalls;
@@ -36,6 +42,13 @@ private:
     
     RectangleShape wallsCheckbox;
     RectangleShape borderCheckbox;
+    RectangleShape gameBorder;
+    
+    int points;
+    int playTime;
+        
+    string pointsText;
+    string timeText;
     
     void updateGame();
     

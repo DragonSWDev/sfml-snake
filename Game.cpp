@@ -276,5 +276,72 @@ void Game::pauseGame()
 
 void Game::drawGame()
 {
+    Snake snake(SCREEN_WIDTH/2/SNAKE_SIZE, SCREEN_HEIGHT/2/SNAKE_SIZE); //Create snake in center of the window
+    
+    //Draw border - it's a big reactangle with transparent fill
+    gameBorder.setPosition(SNAKE_SIZE,SNAKE_SIZE);
+    gameBorder.setSize(Vector2f(SCREEN_WIDTH-SNAKE_SIZE*2, SCREEN_HEIGHT-SNAKE_SIZE*2));
+    gameBorder.setFillColor(Color::Black);
+    gameBorder.setOutlineThickness(3);
+    gameBorder.setOutlineColor(Color::Red);
+    
+    snakePoints.setFont(font);
+    snakePoints.setCharacterSize(20);
+    snakePoints.setPosition(SNAKE_SIZE,0);
+    
+    gameTime.setFont(font);
+    gameTime.setCharacterSize(20);
+    gameTime.setPosition(SNAKE_SIZE+150,0);
+    
+    points = 0;
+    
+    ostringstream sstreamBuffer;
+    
+    Clock playClock;
+    Time originPlayTime;
+    Time elapsedPlayTime;
+    
+    originPlayTime = playClock.getElapsedTime();
+    
+    Event event;
+    
+    while(gameState == Game::STARTED)
+    {
+        while(renderWindow.pollEvent(event))
+        {
+            if(event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)
+                gameState=MENU;
+            
+            if(event.type == Event::Closed)
+                gameState=ENDED;
+        }
+        
+        //Convert int to string by ostringstream, prepare text and set sf::Text
+        pointsText = "Points: ";
+        sstreamBuffer << points;
+        pointsText += sstreamBuffer.str();
+        snakePoints.setString(pointsText);
+        
+        timeText = "Time: ";
+        elapsedPlayTime = playClock.getElapsedTime();
+        playTime = elapsedPlayTime.asSeconds() - originPlayTime.asSeconds();
+        sstreamBuffer << playTime;
+        timeText += sstreamBuffer.str();
+        gameTime.setString(timeText);
+        
+        //Clear the buffer, to use it later
+        sstreamBuffer.str("");
+        sstreamBuffer.clear();
+        
+        renderWindow.clear();
+        
+        renderWindow.draw(gameBorder);
+        renderWindow.draw(snakePoints);
+        renderWindow.draw(gameTime);
+        snake.drawSnake(renderWindow);
+        
+        renderWindow.display();
+    }
+    
     updateGame();
 }
