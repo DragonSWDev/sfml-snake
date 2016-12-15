@@ -200,17 +200,21 @@ void Game::drawOptions()
           //Set right flag after choosing checkbox
           if(event.type == Event::MouseButtonReleased)
               if(borderCheckbox.getGlobalBounds().contains(mouse))
+              {
                   if(!canWalkBorder)
                     canWalkBorder = true;
                   else
                       canWalkBorder = false;
+              }
                   
           if(event.type == Event::MouseButtonReleased)
               if(wallsCheckbox.getGlobalBounds().contains(mouse))
+              {
                   if(!generateWalls)
                       generateWalls = true;
                   else
                       generateWalls = false;
+              }
               
       }
       
