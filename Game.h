@@ -24,7 +24,7 @@ using namespace sf;
 class Game
 {
 private:
-    enum GameState {STARTED,MENU,OPTIONS,PAUSED,ENDED};
+    enum GameState {STARTED,MENU,OPTIONS,PAUSED,OVER,ENDED};
     GameState gameState;
     RenderWindow renderWindow;
     
@@ -56,6 +56,7 @@ private:
     void drawOptions();
     void drawGame();
     void pauseGame();
+    void gameOver();
     
 public:
     Game();

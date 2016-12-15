@@ -45,6 +45,10 @@ void Game::updateGame()
             drawGame();
         break;
         
+        case Game::OVER:
+            gameOver();
+        break;
+        
         case Game::ENDED:
             return;
         break;
@@ -270,6 +274,11 @@ void Game::drawOptions()
 }
 
 void Game::pauseGame()
+{
+    updateGame();
+}
+
+void Game::gameOver()
 {
     updateGame();
 }
