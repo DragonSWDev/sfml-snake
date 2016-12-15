@@ -28,6 +28,14 @@ private:
     
     Text gameName;
     Text menuStrings[3];
+    Text optionsStrings[7];
+    
+    bool snakeFast;
+    bool generateWalls;
+    bool canWalkBorder;
+    
+    RectangleShape wallsCheckbox;
+    RectangleShape borderCheckbox;
     
     void updateGame();
     
