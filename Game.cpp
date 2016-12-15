@@ -134,16 +134,7 @@ void Game::drawOptions()
     optionsStrings[0].setCharacterSize(80);
     optionsStrings[0].setPosition(SCREEN_WIDTH/2-optionsStrings[0].getGlobalBounds().width/2, 50);
     
-    //Set 'Slow' string
-    optionsStrings[5].setFont(font);
-    optionsStrings[5].setCharacterSize(40);
-    optionsStrings[5].setPosition(SCREEN_WIDTH/2-optionsStrings[1].getGlobalBounds().width/2-optionsStrings[5].getGlobalBounds().width, 240);
-    
-    //Set 'Fast' string
-    optionsStrings[6].setFont(font);
-    optionsStrings[6].setCharacterSize(40);
-    optionsStrings[6].setPosition(SCREEN_WIDTH/2-optionsStrings[1].getGlobalBounds().width/2+20, 240);
-    
+    //Draw strings
     for(int i = 1; i < 5; i++)
     {
         optionsStrings[i].setFont(font);
@@ -151,6 +142,16 @@ void Game::drawOptions()
         
         optionsStrings[i].setPosition(SCREEN_WIDTH/2-optionsStrings[i].getGlobalBounds().width/2, 100+100*i);
     }
+    
+    //Set 'Slow' string
+    optionsStrings[5].setFont(font);
+    optionsStrings[5].setCharacterSize(40);
+    optionsStrings[5].setPosition(SCREEN_WIDTH/2-optionsStrings[5].getGlobalBounds().width, 240);
+    
+    //Set 'Fast' string
+    optionsStrings[6].setFont(font);
+    optionsStrings[6].setCharacterSize(40);
+    optionsStrings[6].setPosition(SCREEN_WIDTH/2+optionsStrings[5].getGlobalBounds().width/4, 240);
     
     //Set checkboxes
     borderCheckbox.setSize(Vector2f(20,20));
@@ -237,7 +238,7 @@ void Game::drawOptions()
           optionsStrings[6].setFillColor(Color::Yellow);
       
       
-      //Mark on unmark checkbox
+      //Mark or unmark checkbox
       if(canWalkBorder)
           borderCheckbox.setFillColor(Color::Yellow);
       else
