@@ -311,6 +311,15 @@ void Game::drawGame()
     Time originPlayTime;
     Time elapsedPlayTime;
     
+    Clock gameClock;
+    float elapsedGameTime = 0.0f;
+    float timeStep;
+    
+    if(!snakeFast)
+        timeStep = 0.50f; //Lower update time means faster snake movement
+    else
+        timeStep = 0.25f;
+    
     originPlayTime = playClock.getElapsedTime();
     
     Event event;
@@ -326,9 +335,16 @@ void Game::drawGame()
                 gameState=ENDED;
         }
         
-        //If snake movement fails over game
-        if(!snake.moveSnake())
-            gameState = OVER;
+        elapsedGameTime += gameClock.restart().asSeconds();
+        
+        while(elapsedGameTime > timeStep)
+        {
+            //If snake movement fails over game
+            if(!snake.moveSnake())
+                gameState = OVER;
+            
+            elapsedGameTime -= timeStep;
+        }
         
         //Convert int to string by ostringstream, prepare text and set sf::Text
         pointsText = "Points: ";
