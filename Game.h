@@ -12,6 +12,7 @@
 
 //Game headers
 #include "Snake.h"
+#include "Food.h"
 
 //Define
 #define SCREEN_HEIGHT 600

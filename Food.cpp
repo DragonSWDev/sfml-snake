@@ -7,8 +7,8 @@ Food::Food(int width, int height, int size)
     foodSize = size;
     
     //Rand <SIZE, WIDTH|HEIGHT - SIZE> to fit in game border
-    foodX = rand()%(screenWidth/size - size + 1);
-    foodY = rand()%(screenHeight/size - size + 1);
+    foodX = rand()%(screenWidth/size - 2) + 1;
+    foodY = rand()%(screenHeight/size - 2) + 1;
     
     foodShape.setSize(Vector2f(size,size));
     foodShape.setFillColor(Color::Red);
@@ -17,8 +17,8 @@ Food::Food(int width, int height, int size)
 
 void Food::generateNewFood()
 {
-    foodX = rand()%(screenWidth/foodSize - foodSize + 1);
-    foodY = rand()%(screenHeight/foodSize - foodSize + 1);
+    foodX = rand()%(screenWidth/foodSize - 2) + 1;
+    foodY = rand()%(screenHeight/foodSize - 2) + 1;
     
     foodShape.setPosition(foodX*foodSize, foodY*foodSize);
 }
