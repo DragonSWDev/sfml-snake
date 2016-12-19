@@ -120,3 +120,12 @@ bool Snake::moveSnake()
     
     return true;
 }
+
+void Snake::addSegment(int x, int y)
+{
+    DoubleVector2 vec(snakeX, snakeY);
+    snakeBody.insert(snakeBody.begin(), vec);
+    
+    snakeX = x;
+    snakeY = y;
+}

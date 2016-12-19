@@ -280,6 +280,77 @@ void Game::pauseGame()
 
 void Game::gameOver()
 {
+    for(int i = 0; i < 4; i++)
+    {
+        gameOverStrings[i].setFont(font);
+        gameOverStrings[i].setFillColor(Color::White);
+    }
+    
+    //Game over string
+    gameOverStrings[0].setString("Game Over!");
+    gameOverStrings[0].setCharacterSize(80);
+    gameOverStrings[0].setPosition(SCREEN_WIDTH/2-gameOverStrings[0].getGlobalBounds().width/2,150);
+    gameOverStrings[0].setFillColor(Color::Red);
+    
+    ostringstream buffer;
+    pointsText = "Your points: ";
+    buffer << points;
+    pointsText += buffer.str();
+    gameOverStrings[1].setCharacterSize(40);
+    gameOverStrings[1].setString(pointsText);
+    gameOverStrings[1].setPosition(SCREEN_WIDTH/2-gameOverStrings[1].getGlobalBounds().width/2,240);
+    
+    //Clear buffer
+    buffer.str("");
+    buffer.clear();
+    
+    pointsText = "Your time: ";
+    buffer << playTime;
+    pointsText += buffer.str();
+    pointsText += "s";
+    gameOverStrings[2].setCharacterSize(40);
+    gameOverStrings[2].setString(pointsText);
+    gameOverStrings[2].setPosition(SCREEN_WIDTH/2-gameOverStrings[1].getGlobalBounds().width/2,280);
+    
+    buffer.str("");
+    buffer.clear();
+    
+    gameOverStrings[3].setString("Back to menu");
+    gameOverStrings[3].setCharacterSize(40);
+    gameOverStrings[3].setPosition(SCREEN_WIDTH/2-gameOverStrings[3].getGlobalBounds().width/2,340);
+    
+    Event event;
+    while(gameState == Game::OVER)
+    {
+        Vector2f mouse(Mouse::getPosition(renderWindow));
+        
+        while(renderWindow.pollEvent(event))
+        {
+            if(event.type == Event::Closed)
+                gameState = ENDED;
+            
+            if(event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)
+                gameState = MENU;
+            
+            if(event.type == Event::MouseButtonReleased)
+                if(event.mouseButton.button == Mouse::Left && gameOverStrings[3].getGlobalBounds().contains(mouse))
+                    gameState = MENU;
+        }
+        
+        if(gameOverStrings[3].getGlobalBounds().contains(mouse))
+            gameOverStrings[3].setFillColor(Color::Green);
+        else
+            gameOverStrings[3].setFillColor(Color::White);
+        
+        renderWindow.clear();
+        
+        for(int i = 0; i < 4; i++)
+            renderWindow.draw(gameOverStrings[i]);
+        
+        renderWindow.display();
+    }
+    
+    
     updateGame();
 }
 
@@ -374,11 +445,23 @@ void Game::drawGame()
             elapsedGameTime -= timeStep;
         }
         
+        if(snake.getX() == food.getFoodX() && snake.getY() == food.getFoodY())
+        {
+            points++;
+            snake.addSegment(food.getFoodX(), food.getFoodY());
+            food.generateNewFood();
+        }
+        
         //Convert int to string by ostringstream, prepare text and set sf::Text
         pointsText = "Points: ";
         sstreamBuffer << points;
         pointsText += sstreamBuffer.str();
         snakePoints.setString(pointsText);
+        
+        
+        //Clear buffer
+        sstreamBuffer.str("");
+        sstreamBuffer.clear();
         
         timeText = "Time: ";
         elapsedPlayTime = playClock.getElapsedTime();
@@ -387,7 +470,6 @@ void Game::drawGame()
         timeText += sstreamBuffer.str();
         gameTime.setString(timeText);
         
-        //Clear the buffer, to use it later
         sstreamBuffer.str("");
         sstreamBuffer.clear();
         
@@ -400,8 +482,6 @@ void Game::drawGame()
         food.drawFood(renderWindow);
         
         renderWindow.display();
-        
-        cout << directionChanged << endl;
     }
     
     updateGame();

@@ -36,6 +36,7 @@ private:
     Text optionsStrings[7];
     Text snakePoints;
     Text gameTime;
+    Text gameOverStrings[4];
     
     bool snakeFast;
     bool generateWalls;

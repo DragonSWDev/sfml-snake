@@ -23,6 +23,7 @@ public:
     int getY();
     bool moveSnake();
     void setDirection(MoveDirection dir);
+    void addSegment(int x, int y);
     
 private:
     int snakeSize;
