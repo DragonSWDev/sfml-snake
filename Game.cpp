@@ -285,9 +285,9 @@ void Game::gameOver()
 
 void Game::drawGame()
 {
-    Snake snake(SCREEN_WIDTH/2/SNAKE_SIZE, SCREEN_HEIGHT/2/SNAKE_SIZE); //Create snake in center of the window
+    Snake snake(SCREEN_WIDTH/2/SNAKE_SIZE, SCREEN_HEIGHT/2/SNAKE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, canWalkBorder); //Create snake in center of the window
     Food food(SCREEN_WIDTH, SCREEN_HEIGHT, SNAKE_SIZE);
-    
+        
     //Draw border - it's a big reactangle with transparent fill
     gameBorder.setPosition(SNAKE_SIZE,SNAKE_SIZE);
     gameBorder.setSize(Vector2f(SCREEN_WIDTH-SNAKE_SIZE*2, SCREEN_HEIGHT-SNAKE_SIZE*2));
@@ -324,10 +324,11 @@ void Game::drawGame()
             
             if(event.type == Event::Closed)
                 gameState=ENDED;
-            
-            if(event.type == Event::KeyPressed && event.key.code == Keyboard::Space)
-                food.generateNewFood();
         }
+        
+        //If snake movement fails over game
+        if(!snake.moveSnake())
+            gameState = OVER;
         
         //Convert int to string by ostringstream, prepare text and set sf::Text
         pointsText = "Points: ";
