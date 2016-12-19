@@ -25,7 +25,7 @@ using namespace sf;
 class Game
 {
 private:
-    enum GameState {STARTED,MENU,OPTIONS,PAUSED,OVER,ENDED};
+    enum GameState {STARTED,MENU,OPTIONS,OVER,ENDED};
     GameState gameState;
     RenderWindow renderWindow;
     
@@ -37,10 +37,12 @@ private:
     Text snakePoints;
     Text gameTime;
     Text gameOverStrings[4];
+    Text pauseString;
     
     bool snakeFast;
     bool generateWalls;
     bool canWalkBorder;
+    bool gamePaused;
     
     RectangleShape wallsCheckbox;
     RectangleShape borderCheckbox;
@@ -57,7 +59,6 @@ private:
     void drawMenu();
     void drawOptions();
     void drawGame();
-    void pauseGame();
     void gameOver();
     
 public:

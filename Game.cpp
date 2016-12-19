@@ -12,6 +12,7 @@ Game::Game()
     snakeFast = false;
     canWalkBorder = true;
     generateWalls = false;
+    gamePaused = false;
 }
 
 void Game::startGame()
@@ -35,10 +36,6 @@ void Game::updateGame()
         
         case Game::OPTIONS:
             drawOptions();
-        break;
-        
-        case Game::PAUSED:
-            pauseGame();
         break;
         
         case Game::STARTED:
@@ -273,11 +270,6 @@ void Game::drawOptions()
     updateGame();
 }
 
-void Game::pauseGame()
-{
-    updateGame();
-}
-
 void Game::gameOver()
 {
     for(int i = 0; i < 4; i++)
@@ -374,24 +366,29 @@ void Game::drawGame()
     gameTime.setCharacterSize(20);
     gameTime.setPosition(SNAKE_SIZE+150,0);
     
+    pauseString.setFont(font);
+    pauseString.setCharacterSize(30);
+    pauseString.setFillColor(Color::Magenta);
+    pauseString.setPosition(SNAKE_SIZE+5, SCREEN_HEIGHT/2);
+    pauseString.setString("Game paused (press P to continue)");
+    
     points = 0;
     
     ostringstream sstreamBuffer;
     
     Clock playClock;
-    Time originPlayTime;
-    Time elapsedPlayTime;
+    float elapsedPauseTime = 0;
     
     Clock gameClock;
     float elapsedGameTime = 0.0f;
     float timeStep;
     
+    Clock pauseTime;
+    
     if(!snakeFast)
         timeStep = 0.50f; //Lower update time means faster snake movement
     else
         timeStep = 0.25f;
-    
-    originPlayTime = playClock.getElapsedTime();
     
     Event event;
     
@@ -406,27 +403,43 @@ void Game::drawGame()
             
             if(event.type == Event::Closed)
                 gameState=ENDED;
+            
+            if(event.type == Event::KeyPressed && event.key.code == Keyboard::P)
+            {
+               if(!gamePaused)
+               {
+                   gamePaused = true;
+                   pauseTime.restart();
+               }
+               else
+               {
+                   gamePaused = false;
+                   elapsedGameTime -= pauseTime.getElapsedTime().asSeconds();
+                   
+                   elapsedPauseTime += pauseTime.getElapsedTime().asSeconds();
+               }
+            }
         }
         
-        if(Keyboard::isKeyPressed(Keyboard::Left) && directionChanged)
+        if(Keyboard::isKeyPressed(Keyboard::Left) && directionChanged && !gamePaused)
         {
             snake.setDirection(Snake::LEFT);
             directionChanged = false;
         }
         
-        if(Keyboard::isKeyPressed(Keyboard::Right) && directionChanged)
+        if(Keyboard::isKeyPressed(Keyboard::Right) && directionChanged && !gamePaused)
         {
             snake.setDirection(Snake::RIGHT);
             directionChanged = false;
         }
         
-        if(Keyboard::isKeyPressed(Keyboard::Up) && directionChanged)
+        if(Keyboard::isKeyPressed(Keyboard::Up) && directionChanged && !gamePaused)
         {
             snake.setDirection(Snake::UP);
             directionChanged = false;
         }
         
-        if(Keyboard::isKeyPressed(Keyboard::Down) && directionChanged)
+        if(Keyboard::isKeyPressed(Keyboard::Down) && directionChanged && !gamePaused)
         {
             snake.setDirection(Snake::DOWN);
             directionChanged = false;
@@ -434,6 +447,9 @@ void Game::drawGame()
         
         elapsedGameTime += gameClock.restart().asSeconds();
         
+        //Dont update game when it's paused
+        if(!gamePaused)
+        {
         while(elapsedGameTime > timeStep)
         {
             //If snake movement fails over game
@@ -443,6 +459,7 @@ void Game::drawGame()
             directionChanged = true;
             
             elapsedGameTime -= timeStep;
+        }
         }
         
         if(snake.getX() == food.getFoodX() && snake.getY() == food.getFoodY())
@@ -464,8 +481,11 @@ void Game::drawGame()
         sstreamBuffer.clear();
         
         timeText = "Time: ";
-        elapsedPlayTime = playClock.getElapsedTime();
-        playTime = elapsedPlayTime.asSeconds() - originPlayTime.asSeconds();
+        
+        //Dont update time when game is paused
+        if(!gamePaused)
+            playTime = playClock.getElapsedTime().asSeconds() - elapsedPauseTime;
+        
         sstreamBuffer << playTime;
         timeText += sstreamBuffer.str();
         gameTime.setString(timeText);
@@ -480,6 +500,9 @@ void Game::drawGame()
         renderWindow.draw(gameTime);
         snake.drawSnake(renderWindow);
         food.drawFood(renderWindow);
+        
+        if(gamePaused)
+            renderWindow.draw(pauseString);
         
         renderWindow.display();
     }
