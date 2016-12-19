@@ -324,6 +324,8 @@ void Game::drawGame()
     
     Event event;
     
+    bool directionChanged = true;
+    
     while(gameState == Game::STARTED)
     {
         while(renderWindow.pollEvent(event))
@@ -335,6 +337,30 @@ void Game::drawGame()
                 gameState=ENDED;
         }
         
+        if(Keyboard::isKeyPressed(Keyboard::Left) && directionChanged)
+        {
+            snake.setDirection(Snake::LEFT);
+            directionChanged = false;
+        }
+        
+        if(Keyboard::isKeyPressed(Keyboard::Right) && directionChanged)
+        {
+            snake.setDirection(Snake::RIGHT);
+            directionChanged = false;
+        }
+        
+        if(Keyboard::isKeyPressed(Keyboard::Up) && directionChanged)
+        {
+            snake.setDirection(Snake::UP);
+            directionChanged = false;
+        }
+        
+        if(Keyboard::isKeyPressed(Keyboard::Down) && directionChanged)
+        {
+            snake.setDirection(Snake::DOWN);
+            directionChanged = false;
+        }
+        
         elapsedGameTime += gameClock.restart().asSeconds();
         
         while(elapsedGameTime > timeStep)
@@ -342,6 +368,8 @@ void Game::drawGame()
             //If snake movement fails over game
             if(!snake.moveSnake())
                 gameState = OVER;
+            
+            directionChanged = true;
             
             elapsedGameTime -= timeStep;
         }
@@ -372,6 +400,8 @@ void Game::drawGame()
         food.drawFood(renderWindow);
         
         renderWindow.display();
+        
+        cout << directionChanged << endl;
     }
     
     updateGame();

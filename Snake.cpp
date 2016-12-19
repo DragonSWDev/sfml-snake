@@ -48,6 +48,13 @@ void Snake::drawSnake(RenderWindow& window)
 
 void Snake::setDirection(Snake::MoveDirection dir)
 {
+    //Dont set direction if user wants opposed direction
+    if((dir == LEFT && direction == RIGHT) || (dir == RIGHT && direction == LEFT))
+        return;
+    
+    if((dir == UP && direction == DOWN) || (dir == DOWN && direction == UP))
+        return;
+    
     direction = dir;
 }
 
