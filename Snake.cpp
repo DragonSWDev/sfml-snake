@@ -54,6 +54,10 @@ void Snake::setDirection(Snake::MoveDirection dir)
 //Return false if movement fails (eg. collision)
 bool Snake::moveSnake()
 {
+    int oldX, oldY;
+    oldX = snakeX;
+    oldY = snakeY;
+    
     switch(direction)
     {
         case Snake::UP:
@@ -74,8 +78,38 @@ bool Snake::moveSnake()
     }
     
     if(!canWalkBorder)
-        if(snakeX >= maxX || snakeY >= maxY)
+    {
+        if(snakeX >= maxX || snakeX < 1 || snakeY >= maxY || snakeY < 1)
             return false;
+    }
+    else
+    {
+        if(snakeX >= maxX)
+            snakeX = 1;
+        
+        if(snakeX < 1)
+            snakeX = maxX-1;
+        
+        if(snakeY >= maxY)
+            snakeY = 1;
+        
+        if(snakeY < 1)
+            snakeY = maxY-1;
+    }
+    
+    //False when snake eat own body
+    for(unsigned int i = 0; i < snakeBody.size(); i++)
+        if(snakeX == snakeBody[i].getX() && snakeY == snakeBody[i].getOldY())
+            return false;
+        
+    snakeHead.setPosition(Vector2f(snakeX*snakeSize, snakeY*snakeSize)); 
+    
+    snakeBody[0].setNewPosition(oldX, oldY);
+    
+    //If there are more elements than 1, move them all
+    if(snakeBody.size() > 1)
+        for(unsigned int i = 1; i < snakeBody.size(); i++)
+            snakeBody[i].setNewPosition(snakeBody[i-1].getOldX(), snakeBody[i-1].getOldY());
     
     return true;
 }
