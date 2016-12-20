@@ -464,7 +464,14 @@ void Game::drawGame()
         {
             points++;
             snake.addSegment(food.getFoodX(), food.getFoodY());
+            
             food.generateNewFood();
+            
+            //If new food is generated on snake, make new
+            while(snake.collideWithSnake(food.getFoodX(), food.getFoodY()))
+            {
+                food.generateNewFood();
+            }
         }
         
         //Convert int to string by ostringstream, prepare text and set sf::Text

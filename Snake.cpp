@@ -129,3 +129,16 @@ void Snake::addSegment(int x, int y)
     snakeX = x;
     snakeY = y;
 }
+
+//Check if given point collide with Snake
+bool Snake::collideWithSnake(int x, int y)
+{
+    if(x == snakeX && y == snakeY)
+        return true;
+    
+    for(vector<DoubleVector2>::iterator i = snakeBody.begin(); i != snakeBody.end(); i++)
+        if(x == i->getX() && y == i->getY())
+            return true;
+        
+    return false;
+}
