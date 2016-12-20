@@ -47,6 +47,7 @@ void Game::updateGame()
         break;
         
         case Game::ENDED:
+            renderWindow.close();
             return;
         break;
     }
@@ -386,9 +387,9 @@ void Game::drawGame()
     Clock pauseTime;
     
     if(!snakeFast)
-        timeStep = 0.50f; //Lower update time means faster snake movement
+        timeStep = 0.35f; //Lower update time means faster snake movement
     else
-        timeStep = 0.25f;
+        timeStep = 0.15f;
     
     Event event;
     
@@ -448,9 +449,7 @@ void Game::drawGame()
         elapsedGameTime += gameClock.restart().asSeconds();
         
         //Dont update game when it's paused
-        if(!gamePaused)
-        {
-        while(elapsedGameTime > timeStep)
+        while(elapsedGameTime > timeStep && !gamePaused)
         {
             //If snake movement fails over game
             if(!snake.moveSnake())
@@ -459,7 +458,6 @@ void Game::drawGame()
             directionChanged = true;
             
             elapsedGameTime -= timeStep;
-        }
         }
         
         if(snake.getX() == food.getFoodX() && snake.getY() == food.getFoodY())
