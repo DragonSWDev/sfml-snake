@@ -3,7 +3,7 @@
 Wall::Wall(int size, int width, int height)
 {
     wallSize = size;
-    int maxParts = rand()%(40-20+1)+20;
+    int maxParts = rand()%(20-10+1)+10;
     
     int direction;
     int x=width/size/2, y=height/size/2;
