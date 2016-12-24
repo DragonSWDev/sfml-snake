@@ -11,11 +11,13 @@ This is a simple Snake clone written in C++ with SFML 2 library.
     
 #### 3. Configure and build
 **Unix-like (Linux, BSD etc.)**
+
     mkdir build && cd build
     cmake ..
     make
     
 If You have SFML installed in custom location, You can specify include and lib files by adding this to CMakeLists.txt:
+
     include_directories(/mydir/include)
     link_directories(/mydir/lib)
     
