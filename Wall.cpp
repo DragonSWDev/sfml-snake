@@ -2,6 +2,7 @@
 
 Wall::Wall(int size, int width, int height)
 {
+    wallSize = size;
     int maxParts = rand()%(20-5+1)+5;
     
     int direction;
@@ -48,7 +49,7 @@ Wall::Wall(int size, int width, int height)
 bool Wall::isCollision(int x, int y)
 {
     for(int i = 0; i < parts.size(); i++)
-        if(parts[i].x == x && parts[i].y == y)
+        if(parts[i].x/wallSize == x && parts[i].y/wallSize == y)
             return true;
         
     return false;

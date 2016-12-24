@@ -14,6 +14,7 @@ class Wall
 private:
     vector <Vector2f> parts;
     RectangleShape wall;
+    int wallSize;
     
 public:
     Wall(int size, int width, int height);

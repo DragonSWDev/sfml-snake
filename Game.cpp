@@ -349,8 +349,31 @@ void Game::gameOver()
 
 void Game::drawGame()
 {
-    Snake snake(SCREEN_WIDTH/2/SNAKE_SIZE, SCREEN_HEIGHT/2/SNAKE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, canWalkBorder); //Create snake in center of the window
+    int snakeX, snakeY;
+    
+    //Set Snake position on center of the screen
+    snakeX = SCREEN_WIDTH/SNAKE_SIZE/2;
+    snakeY = SCREEN_HEIGHT/SNAKE_SIZE/2;
+    
     Food food(SCREEN_WIDTH, SCREEN_HEIGHT, SNAKE_SIZE);
+    
+    Wall wall(SNAKE_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT);
+    
+    //If snake is generated within wall - generate his position again
+    while((wall.isCollision(snakeX, snakeY) || wall.isCollision(snakeX, snakeY+1)) && generateWalls)
+    {
+      snakeX = rand()%(SCREEN_WIDTH/SNAKE_SIZE-6+1)+2;
+      snakeY = rand()%(SCREEN_HEIGHT/SNAKE_SIZE-6+1)+2; 
+    }
+    
+    //If food is generated within wall - generate it position again
+    while(wall.isCollision(food.getFoodX(), food.getFoodY()) && generateWalls)
+    {
+        food.generateNewFood();
+    }
+    
+    //Create snake
+    Snake snake(snakeX, snakeY, SCREEN_WIDTH, SCREEN_HEIGHT, canWalkBorder);
         
     //Draw border - it's a big reactangle with transparent fill
     gameBorder.setPosition(SNAKE_SIZE,SNAKE_SIZE);
@@ -457,6 +480,10 @@ void Game::drawGame()
             
             directionChanged = true;
             
+            //Game over if snake collide with wall
+            if(wall.isCollision(snake.getX(), snake.getY()) && generateWalls)
+                gameState = OVER;
+            
             elapsedGameTime -= timeStep;
         }
         
@@ -467,10 +494,21 @@ void Game::drawGame()
             
             food.generateNewFood();
             
-            //If new food is generated on snake, make new
-            while(snake.collideWithSnake(food.getFoodX(), food.getFoodY()))
+            if(!generateWalls)
             {
-                food.generateNewFood();
+                //If food is generate on snake - generate new
+                while(snake.collideWithSnake(food.getFoodX(), food.getFoodY()))
+                {
+                    food.generateNewFood();
+                }
+            }
+            else
+            {
+                //Same as before but include wall
+                while(snake.collideWithSnake(food.getFoodX(), food.getFoodY()) || wall.isCollision(food.getFoodX(), food.getFoodY()))
+                {
+                    food.generateNewFood();
+                }
             }
         }
         
@@ -505,6 +543,9 @@ void Game::drawGame()
         renderWindow.draw(gameTime);
         snake.drawSnake(renderWindow);
         food.drawFood(renderWindow);
+        
+        if(generateWalls)
+            wall.drawWall(renderWindow);
         
         if(gamePaused)
             renderWindow.draw(pauseString);
