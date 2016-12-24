@@ -22,6 +22,7 @@ If You have SFML installed in custom location, You can specify include and lib f
     link_directories(/mydir/lib)
     
 **Windows**
+
 You can use cmake, but better idea is to install Visual Studio, create new project, install SFML, import all SFML Snake sources to the created project and compile it. You can find instructions about using SFML in Visual Studio here:
 http://www.sfml-dev.org/tutorials/2.4/start-vc.php
     
