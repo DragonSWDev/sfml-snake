@@ -10,7 +10,7 @@ This is a simple Snake clone written in C++ with SFML 2 library.
     git clone https://github.com/BlackDragonK99/sfml-snake && cd sfml-snake
     
 #### 3. Configure and build
-** Unix-like (Linux, BSD etc.) **
+**Unix-like (Linux, BSD etc.)**
     mkdir build && cd build
     cmake ..
     make
@@ -19,7 +19,7 @@ If You have SFML installed in custom location, You can specify include and lib f
     include_directories(/mydir/include)
     link_directories(/mydir/lib)
     
-** Windows **
+**Windows**
 You can use cmake, but better idea is to install Visual Studio, create new project, install SFML, import all SFML Snake sources to the created project and compile it. You can find instructions about using SFML in Visual Studio here:
 http://www.sfml-dev.org/tutorials/2.4/start-vc.php
     
