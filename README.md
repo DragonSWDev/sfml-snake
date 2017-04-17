@@ -7,7 +7,7 @@ This is a simple Snake clone written in C++ with SFML 2 library.
 
 #### 2. Get source code
 
-    git clone https://github.com/BlackDragonK99/sfml-snake && cd sfml-snake
+    git clone https://github.com/BlackDragonDev/sfml-snake && cd sfml-snake
     
 #### 3. Configure and build
 **Unix-like (Linux, BSD etc.)**
